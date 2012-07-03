@@ -1,0 +1,103 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          munin-graphite
+# Required-Start:    $network $named $remote_fs $syslog
+# Required-Stop:     $network $named $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: munin-graphite daemon
+# Description:       Send Munin stats into Graphite Carbon daemon and
+#                    send plugin config to MDash Webinterface.
+### END INIT INFO
+
+# Author: Jonas Genannt <jonas.genannt@capi2name.de>
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="Munin-Graphite daemon"
+NAME=munin-graphite
+DAEMON=/usr/bin/munin-graphite
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+MUNIN_GRAPHITE_ENABLED=false
+MUNIN_INTERVAL_TIME=60
+MDASH_URL="http://your-server.com:3000/munin/update"
+CARBON_HOST="localhost"
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+. /lib/init/vars.sh
+
+. /lib/lsb/init-functions
+
+DAEMON_ARGS="--pidfile $PIDFILE --carbon-host $CARBON_HOST --mdash-url $MDASH_URL --interval $MUNIN_INTERVAL_TIME"
+
+do_start()
+{
+	if [ "$MUNIN_GRAPHITE_ENABLED" != "true" ] ; then
+		log_progress_msg "(disabled)"
+		log_end_msg 0
+
+		exit 0
+	fi
+	start-stop-daemon --start --quiet --pidfile $PIDFILE \
+		--startas $DAEMON -- $DAEMON_ARGS \
+		|| return 2
+}
+
+do_stop()
+{
+	if [ -s $PIDFILE ]; then
+		kill -9 `cat ${PIDFILE}` >/dev/null 2>&1
+	fi
+	rm -f $PIDFILE
+	return "0"
+}
+
+case "$1" in
+  start)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+	do_start
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  stop)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+	do_stop
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  status)
+       status_of_proc -p "${PIDFILE}" "$DAEMON" "$NAME" && exit 0 || exit $?
+       ;;
+  restart|force-reload)
+	log_daemon_msg "Restarting $DESC" "$NAME"
+	do_stop
+	case "$?" in
+	  0|1)
+		do_start
+		case "$?" in
+			0) log_end_msg 0 ;;
+			1) log_end_msg 1 ;; # Old process is still running
+			*) log_end_msg 1 ;; # Failed to start
+		esac
+		;;
+	  *)
+		# Failed to stop
+		log_end_msg 1
+		;;
+	esac
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+	exit 3
+	;;
+esac
+
+:
