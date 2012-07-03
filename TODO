@@ -1,0 +1,14 @@
+
+
++++ Fix munin to graphite translation
++++ add footer to graph
+  - cur
+  - min
+  - avg
+  like Munin in html, read csv from graphite
+
+- zooming
+- custom dashboards like gdash
+- Search BOX: plugins
+- proxy for graphs
+- don't require running munin-node only etc/munin/plugins/
