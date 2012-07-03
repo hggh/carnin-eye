@@ -1,0 +1,14 @@
+
+
+# Ignore bundler config
+web/.bundle
+
+# Ignore the default SQLite database.
+web/db/*.sqlite3
+
+# Ignore all logfiles and tempfiles.
+web/log/*.log
+web/tmp
+
+# Ignore all munin plugin data files
+web/plugin_data/*
