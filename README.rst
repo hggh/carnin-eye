@@ -14,10 +14,18 @@ Carnin Eye is an Munin to Graphite bridge. Carnin Eye consists of two systems:
   - collects plugin data and sends it to Graphite/Carbon
   - collects plugin config and sends it to Carnin Eye Webinterface
 
+Screenhosts
++++++++++++
+
+* Hosts Overview: https://github.com/hggh/carnin-eye/blob/master/screenshots/overview.jpg
+* Host View: https://github.com/hggh/carnin-eye/blob/master/screenshots/host.jpg
 
 Credits
 +++++++
 
+* Evelin Willbrandt
+
+ - the fancy name Carnin Eye
 
 Contact?
 ++++++++
