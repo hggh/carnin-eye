@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Carnin Eye</title>
+		<%= stylesheet_link_tag    "application", :media => "all" %>
+		<%= javascript_include_tag "application" %>
+		<%= csrf_meta_tags %>
+	</head>
+	<body>
+
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav">
+						<li>
+							<%= link_to 'Home', root_url %>
+						</li>
+						<li class="divider-vertical"></li>
+						<li>
+							<%= form_tag('/search', :remote => true, :method => "get", :class => "navbar-search pull-left") %>
+							<input type="text" name="search_box" id="search_box" class="search-query" placeholder="Search Hosts...">
+							</form>
+								
+
+							<ul class="dropdown-menu" id="results" >
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						<li class="dropdown"  id="search_clear">
+							<span class="caret"><i class="icon-remove icon-white"></i></span>
+
+						</li>
+					</ul>
+
+					<ul class="nav pull-right">
+						<li class="divider-vertical"></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#">Not working #1</a>
+								</li>
+								<li>
+									<a href="#">Not working #2</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div style="right:10px;position:absolute;margin-bottom:10px;">
+			<small>Update every 60 seconds [<a href="">pause</a>]</small>
+		</div>
+
+
+
+		<div class="container">
+			<%= yield %>
+		</div>
+
+	</body>
+</html>

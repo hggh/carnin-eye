@@ -1,0 +1,6 @@
+<% @hosts.each do |h|%>
+	<li><%= link_to h.name, h %></li>
+<% end %>
+<% if @hosts.count == 0 %>
+	<li>No Host found.</li>
+<% end %>

@@ -1,0 +1,22 @@
+<h1>Hosts Overview</h1>
+<hr/>
+
+<table class="table">
+<% @domains.each do |d| %>
+<tr>
+ <td colspan="3"><h3><%= d.name %></h3></td>
+</tr>
+ <% d.hosts.order("name ASC").each do |h| %>
+ <tr>
+   <td></td>
+   <td><%= link_to h.name, h %></td>
+   <td>[
+    <% h.get_categories.each do |c| %>
+    <%= link_to c.name, host_path( h,:anchor => c.name) %> 
+    <% end %>
+   ]</td>
+ </tr>
+ <% end %>
+<% end %>
+</table>
+

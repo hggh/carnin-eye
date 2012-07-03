@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  plg_name: MyString
+  graphite_name: MyString
+  plg_title: MyString
+  plg_info: MyString
+  category: 
+  host: 
+
+two:
+  plg_name: MyString
+  graphite_name: MyString
+  plg_title: MyString
+  plg_info: MyString
+  category: 
+  host: 

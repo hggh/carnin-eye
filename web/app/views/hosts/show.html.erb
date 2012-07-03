@@ -1,0 +1,32 @@
+<h1><%= @host.name %></h1>
+<div style="float:right">
+[
+<% @host.get_categories.each do |c| %>
+<a href="#<%= c.name %>"><%= c.name %></a> 
+<% end %>
+]
+</div>
+<hr/>
+
+
+<% @host.get_categories.each do |c| %>
+<h3><a name="<%= c.name %>"><%= c.name %></a></h3>
+<hr/>
+
+<% @host.get_plugins_by_category_id(c.id).each do |p| %>
+  <h6>:: <%= p.plg_title %></h6>
+  <table>
+   <tr>
+   	 <!-- day on <%= p.plg_name %> -->
+   	 <td><img src="<%= p.graph('day') %>" /></td>
+
+     <!-- week -->
+     <td><img src="<%= p.graph('week') %>" /></td>
+   </tr>
+  </table>
+<% end %>
+
+<hr/>
+<% end %>
+
+

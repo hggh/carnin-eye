@@ -1,0 +1,9 @@
+development:
+  graphite_url: http://graphite.danica.brachium-system.net/render/?
+  graph_height: 300
+  graph_width: 500
+
+production:
+  graphite_url: http://graphite.danica.brachium-system.net/render/?
+  graph_height: 300
+  graph_width: 500
