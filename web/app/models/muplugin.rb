@@ -25,6 +25,13 @@ class Muplugin < ActiveRecord::Base
     ggraph.height graph_height
     ggraph.hide_legend false
     ggraph.ymax munin_plg.ymax if munin_plg.ymax
+    ggraph.ymin munin_plg.ymin if munin_plg.ymin
+    ggraph.yunit_system munin_plg.yunit_system if munin_plg.yunit_system
+    # Color Stuff
+    ggraph.major_grid_line_color 'efadad'
+    ggraph.minor_grid_line_color 'd0d0d0'
+    ggraph.background_color 'f3f3f3'
+    ggraph.foreground_color 'black'
     munin_plg.fields.each do |k|
       foptions = munin_plg.get_field(k)
       ggraph.field ":#{k}", :data => graph_field_filename(k),

@@ -1,7 +1,7 @@
 class Munin
   class Plugin
     SCALE_TO_SECONDS = [ 'nfs_client', 'nginx_request', 'forks', 'interrupts', 'fw_packets' ]
-    attr_reader :plg_title, :plg_info, :category, :vlabel, :fields, :name, :ymax
+    attr_reader :plg_title, :plg_info, :category, :vlabel, :fields, :name, :ymax, :ymin, :yunit_system
     def initialize(name,config)
       @name     = name
       @config   = config
@@ -10,6 +10,8 @@ class Munin
       @category = "other"
       @vlabel   = ""
       @ymax     = nil
+      @ymin     = nil
+      @yunit_system = 1000
 
       parse_config
     end
@@ -76,6 +78,12 @@ class Munin
         if val[0].to_s == "graph_args" and val[1].to_s =~ /--upper-limit (\d+)/
          # seems on Graphite upper-limit will hide some lines, so + 10 :-/
           @ymax = ($1.to_i + 10).to_s
+        end
+        if val[0].to_s == "graph_args" and val[1].to_s =~ /-l (\d+)/
+          @ymin = $1.to_i
+        end
+        if val[0].to_s == "graph_args" and val[1].to_s =~ /--base 1024/
+          @yunit_system = 1024
         end
       end
       @fields.uniq!
