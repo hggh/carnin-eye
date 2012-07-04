@@ -1,7 +1,6 @@
 class Muplugin < ActiveRecord::Base
   belongs_to :category
   belongs_to :host
-  has_many :mufields, :dependent => :destroy
   
   def filename
     File.join('plugin_data', host.name + '__' + plg_name + '.muconfig')
