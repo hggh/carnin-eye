@@ -75,7 +75,7 @@ end
 options = {
   :munin_node_host => '127.0.0.1',
   :munin_node_port => 4949,
-  :cabon_host => '127.0.0.1',
+  :carbon_host => '127.0.0.1',
   :carbon_port => 2003,
   :interval => 60,
   :runonce => false,
@@ -92,8 +92,8 @@ OptionParser.new do |opts|
   opts.on("-p", "--munin-node-port PORT", "munin Node port (default: #{options[:munin_node_port].to_s})") do |o|
     options[:munin_node_port] = o.to_i
   end
-  opts.on("-c", "--carbon-host HOST", "graphite/carbon Hostname (default: #{options[:cabon_host].to_s})") do |o|
-    options[:cabon_host] = o
+  opts.on("-c", "--carbon-host HOST", "graphite/carbon Hostname (default: #{options[:carbon_host].to_s})") do |o|
+    options[:carbon_host] = o
   end
   opts.on("-a", "--carbon-port PORT", "graphite/carbon port (default: #{options[:carbon_port].to_s})") do |o|
     options[:carbon_port] = o.to_i
@@ -163,7 +163,7 @@ fork do
       end
       munin.close
       
-      carbon = Carbon.new(options[:cabon_host], options[:carbon_port])
+      carbon = Carbon.new(options[:carbon_host], options[:carbon_port])
       all_metrics.each do |m|
         carbon.send(m)
       end
