@@ -1,0 +1,25 @@
+var bReloadDashBoard = true;
+$(document).ready(function() {
+  setInterval(reloadDashBoard, <%= Configuration.dboard_refresh_time.to_i * 1000 %>);
+
+  $('#dboard_rf_pause').click(function() {
+    $('#dboard_rf_pause').hide();
+    $('#dboard_rf_start').show();
+    bReloadDashBoard = false;
+  });
+  $('#dboard_rf_start').click(function() {
+    $('#dboard_rf_pause').show();
+    $('#dboard_rf_start').hide();
+    bReloadDashBoard = true;
+  });
+});
+
+function reloadDashBoard() {
+  if (bReloadDashBoard == true) {
+    var now = new Date();
+    $('img').each(function(index) {
+      var url = $(this).attr('src').replace(/&\d+$/, '');
+      $(this).attr('src', url + '&' + now.getTime());
+    });
+  }
+}
