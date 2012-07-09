@@ -5,8 +5,8 @@ Carnin Eye is an Munin to Graphite bridge. Carnin Eye consists of two systems:
 
 * Carnin Eye Webinterface
    
-   - Munin like dashboard hosts / plugin view
-   - Custom dashboard possible
+  - Munin like dashboard hosts / plugin view
+  - Custom dashboard possible
 
 * Carnin Eye Client
 
@@ -25,7 +25,7 @@ Credits
 
 * Evelin Willbrandt
 
- - the fancy name Carnin Eye
+  - the fancy name Carnin Eye
 
 Contact?
 ++++++++

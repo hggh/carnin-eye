@@ -18,10 +18,10 @@
   <table>
    <tr>
    	 <!-- day on <%= p.plg_name %> -->
-   	 <td><img src="<%= p.graph('day') %>" /></td>
+   	 <td><img src="<%= p.graph(Configuration.graph_time_day) %>" /></td>
 
      <!-- week -->
-     <td><img src="<%= p.graph('week') %>" /></td>
+     <td><img src="<%= p.graph(Configuration.graph_time_week) %>" /></td>
    </tr>
   </table>
 <% end %>
