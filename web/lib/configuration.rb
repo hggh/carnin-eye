@@ -1,5 +1,5 @@
 class Configuration
-	@settings = YAML::load_file('config/mdash-web.yml')[Rails.env]
+	@settings = YAML::load_file('config/carnin-eye.yml')[Rails.env]
 
 	def self.method_missing(key)
 		if @settings[key.to_s]
