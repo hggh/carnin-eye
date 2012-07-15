@@ -12,3 +12,6 @@ web/tmp
 
 # Ignore all munin plugin data files
 web/plugin_data/*
+
+# Ignore all custom dashboards
+web/dashboards/*
