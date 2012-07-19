@@ -29,15 +29,15 @@ class Muplugin < ActiveRecord::Base
     ggraph.ymin munin_plg.ymin if munin_plg.ymin
     ggraph.yunit_system munin_plg.yunit_system if munin_plg.yunit_system
     # Color Stuff
-    ggraph.major_grid_line_color 'efadad'
-    ggraph.minor_grid_line_color 'd0d0d0'
-    ggraph.background_color 'f3f3f3'
-    ggraph.foreground_color 'black'
+    ggraph.major_grid_line_color Configuration.graph_major_grid_line_color
+    ggraph.minor_grid_line_color Configuration.graph_minor_grid_line_color
+    ggraph.background_color Configuration.graph_background_color
+    ggraph.foreground_color Configuration.graph_foreground_color
     # Custom format for daily graph
     if time_start.to_s == Configuration.graph_time_day
       ggraph.xformat '%a %H:%M'
     end
-    ggraph.fontsize '9'
+    ggraph.fontsize Configuration.graph_fontsize
     graph_id = 0
     munin_plg.fields.each do |k|
       color = Configuration.graph_single_color
