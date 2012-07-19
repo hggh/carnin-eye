@@ -7,7 +7,6 @@
 		<%= csrf_meta_tags %>
 	</head>
 	<body>
-
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
@@ -20,10 +19,7 @@
 							<%= form_tag('/search', :remote => true, :method => "get", :class => "navbar-search pull-left") %>
 							<input type="text" name="search_box" id="search_box" class="search-query" placeholder="Search Hosts...">
 							</form>
-								
-
-							<ul class="dropdown-menu" id="results" >
-							</ul>
+							<ul class="dropdown-menu" id="results" ></ul>
 						</li>
 						<li class="divider-vertical"></li>
 						<li class="dropdown"  id="search_clear">
@@ -34,16 +30,8 @@
 
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="#">Not working #1</a>
-								</li>
-								<li>
-									<a href="#">Not working #2</a>
-								</li>
-							</ul>
+						<li>
+							<%= link_to 'Dashboard', dashboard_url %>
 						</li>
 					</ul>
 				</div>
@@ -53,8 +41,6 @@
 		<div style="right:10px;position:absolute;margin-bottom:10px;">
 			<small>Update every <%= Configuration.dboard_refresh_time %> seconds <span id="dboard_rf_pause">[<a href="#">pause</a>]</span><span id="dboard_rf_start" style="display:none">[<a href="#">run again</a>]</span></small>
 		</div>
-
-
 
 		<div class="container">
 			<%= yield %>
