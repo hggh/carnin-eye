@@ -1,0 +1,6 @@
+:munin_node_host: 127.0.0.1
+:munin_node_port: 4949
+:carbon_host: localhost
+:carbon_port: 2003
+:interval: 60
+:url: http://user:password@localhost:3000/munin/update

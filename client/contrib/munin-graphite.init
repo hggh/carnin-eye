@@ -19,9 +19,7 @@ DAEMON=/usr/bin/munin-graphite
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 MUNIN_GRAPHITE_ENABLED=false
-MUNIN_INTERVAL_TIME=60
-MDASH_URL="http://your-server.com:3000/munin/update"
-CARBON_HOST="localhost"
+MUNIN_GRAPHITE_CONFIG="/etc/carmin-eye/client.yml"
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
@@ -32,7 +30,7 @@ CARBON_HOST="localhost"
 
 . /lib/lsb/init-functions
 
-DAEMON_ARGS="--pidfile $PIDFILE --carbon-host $CARBON_HOST --mdash-url $MDASH_URL --interval $MUNIN_INTERVAL_TIME"
+DAEMON_ARGS="--pidfile $PIDFILE --config $MUNIN_GRAPHITE_CONFIG"
 
 do_start()
 {

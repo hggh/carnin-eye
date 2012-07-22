@@ -1,12 +1,5 @@
 # Change to true, to enable munin-graphite on boot
 MUNIN_GRAPHITE_ENABLED=false
 
-# Interval to query munin-node and send stats to Graphite
-# default 60s
-MUNIN_INTERVAL_TIME=60
-
-# URL to MDash
-MDASH_URL="http://your-server.com:3000/munin/update"
-
-# Graphote/Carbon Host
-CARBON_HOST="localhost"
+# Path to graphite-munin yml configuration file
+MUNIN_GRAPHITE_CONFIG="/etc/carmin-eye/client.yml"

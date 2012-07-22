@@ -1,4 +1,6 @@
 
+# Ignore client config
+client/client.yml
 
 # Ignore bundler config
 web/.bundle
