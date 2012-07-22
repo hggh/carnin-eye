@@ -29,6 +29,7 @@ require 'json'
 require "net/http"
 require "uri"
 require 'syslog'
+require 'yaml'
 
 class Munin
   def initialize(host='127.0.0.1', port=4949)
@@ -73,44 +74,30 @@ class Carbon
 end
 
 options = {
-  :munin_node_host => '127.0.0.1',
-  :munin_node_port => 4949,
-  :carbon_host => '127.0.0.1',
-  :carbon_port => 2003,
-  :interval => 60,
   :runonce => false,
   :pidfile => '/var/run/munin-graphite.pid',
-  :mdash_url => "http://localhost:3000/munin/update",
+  :config_file => "/etc/carmin-eye/client.yml",
 }
 
 OptionParser.new do |opts|
   opts.banner = "Usage: munin-graphite.rb [options]"
 
-  opts.on("-m", "--munin-node-host HOST", "munin Node host (default: #{options[:munin_node_host].to_s})") do |o|
-    options[:munin_node_host] = o
-  end
-  opts.on("-p", "--munin-node-port PORT", "munin Node port (default: #{options[:munin_node_port].to_s})") do |o|
-    options[:munin_node_port] = o.to_i
-  end
-  opts.on("-c", "--carbon-host HOST", "graphite/carbon Hostname (default: #{options[:carbon_host].to_s})") do |o|
-    options[:carbon_host] = o
-  end
-  opts.on("-a", "--carbon-port PORT", "graphite/carbon port (default: #{options[:carbon_port].to_s})") do |o|
-    options[:carbon_port] = o.to_i
-  end
   opts.on("-r", "--runonce", "run graphite-munin once and exit. do not start as daemon") do |o|
     options[:runonce] = true
   end
-  opts.on("-f", "--pidfile FILE", "pidfile for munin-graphite (default: #{options[:pidfile].to_s})") do |o|
+  opts.on("-p", "--pidfile FILE", "pidfile for munin-graphite (default: #{options[:pidfile].to_s})") do |o|
     options[:pidfile] = o
   end
-  opts.on("-i", "--interval INTERVAL", "interval in seconds to query munin-node and send stats to graphite/carbon (default: #{options[:interval].to_s})") do |o|
-    options[:interval] = o.to_i
-  end
-  opts.on("-u", "--mdash-url URL", "URL to MDash Webinterface: http://your-server.com:3000/munin/update") do |o|
-    options[:mdash_url] = o
+  opts.on("-c", "--config FILE", "config file for munin-graohite (default: #{options[:config_file]})") do |o|
+    options[:config_file] = o
   end
 end.parse!
+
+unless File.readable?(options[:config_file])
+  puts "Configuration file #{options[:config_file]} is not readable!"
+  exit 1
+end
+@config = YAML.load(File.read(options[:config_file]))
 
 fork do
   Process.setsid
@@ -134,7 +121,7 @@ fork do
         mdash_send = Time.now.to_i
       end
 
-      munin = Munin.new(options[:munin_node_host], options[:munin_node_port])
+      munin = Munin.new(@config[:munin_node_host], @config[:munin_node_port])
       munin.get_response("nodes").each do |node|
         plugin_config[node] = Hash.new
         metric_base << node.split(".").reverse.join(".")
@@ -163,17 +150,18 @@ fork do
       end
       munin.close
       
-      carbon = Carbon.new(options[:carbon_host], options[:carbon_port])
+      carbon = Carbon.new(@config[:carbon_host], @config[:carbon_port])
       all_metrics.each do |m|
         carbon.send(m)
       end
       carbon.close
       
       if mdash_send_now
-        uri = URI.parse(options[:mdash_url])
-        res = Net::HTTP.post_form(uri, {"json" => plugin_config.to_json})
+        uri = URI.parse(@config[:url])
+        res = Net::HTTP.post_form(uri, { "json" => plugin_config.to_json })
+
         if res.code.to_i != 200
-          Syslog.open($0, Syslog::LOG_PID | Syslog::LOG_CONS) { |d| d.warning "Response to MDash was #{res.code}" }
+          Syslog.open($0, Syslog::LOG_PID | Syslog::LOG_CONS) { |d| d.warning "Response to Carmin Eye Web was #{res.code}" }
         end
       end
     
@@ -188,6 +176,6 @@ fork do
         Syslog.open($0, Syslog::LOG_PID | Syslog::LOG_CONS) { |d| d.warning "Munin Graphite: #{e.message}" }
       end
     end
-    sleep options[:interval]
+    sleep @config[:interval]
   end
 end
