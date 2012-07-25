@@ -38,7 +38,6 @@ class HostsController < ApplicationController
         
 
       ## FIXME: Delete Old plugins from database
-      ## FIXME: transform json and create new json
       end
     end
   end
